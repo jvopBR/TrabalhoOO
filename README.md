@@ -1,35 +1,30 @@
-# GeekList (Trabalho de OO)
+# GeekList (Projeto de Desenvolvimento de Software Orientado a Objetos)
 
+## Descrição
 
-## Tematica do Site
+O GeekList é um website dedicado à cultura geek, com foco especial em filmes e cinema. Desenvolvido como parte de um projeto de Desenvolvimento de Software Orientado a Objetos, o GeekList oferece uma plataforma onde os entusiastas de cinema podem se conectar, explorar conteúdos relacionados e interagir com funcionalidades exclusivas.
 
-O site tem como principal temática a cultura Geek, mais precisamente sobre filmes e cinema.
+## Funcionalidades Principais
 
+- **Sistema de Registro e Login**: Os usuários podem criar contas no GeekList e fazer login para acessar recursos exclusivos.
+- **Página VIP**: Após o login, os usuários têm acesso a uma página VIP com recursos exclusivos.
+- **Painel de Notas**: Os usuários podem usar um painel de notas para registrar informações relacionadas a filmes, como roteiros, citações memoráveis, resenhas, entre outros, em formato de texto.
+- **ChatGPT Personalizado**: Os usuários podem interagir com um chatbot personalizado com comportamento diferenciado, alimentado por uma API da OpenAI.
 
-## Funcionalidades
+## Tecnologias Utilizadas
 
-O Site possui um sistema de registro e login simples dando acesso a uma página privada (Vip) onde apenas quem possui conta no site consegue ter acesso, após a conta ser criada e devidamente logada no site
-é possivel acessar um painel de notas que tem como objetivo registrar o que o usuário quiser (Em formato de texto), como roteiros, falas importante e frases que apresenta em filmes, resenhas e por ai vai.
+- **Python**: Linguagem de programação principal utilizada para o desenvolvimento do backend.
+- **JavaScript**: Linguagem de programação utilizada para aprimorar a interatividade e funcionalidades do frontend.
+- **Flask**: Framework web em Python utilizado para desenvolver o backend do aplicativo.
+- **SQLAlchemy**: Biblioteca em Python utilizada para interagir com o banco de dados SQL.
+- **HTML e CSS**: Linguagens de marcação e estilo utilizadas para estruturar e estilizar as páginas web.
 
-Contém tambem uma caixa de texto onde poderá interagir com um ChatGPT customizado, com comportamento diferenciado do comum. O sistema utiliza uma API da openAI oferecida pelo professor da matéria
+## Desenvolvedor
 
-## Linguagens
- - Python
- - JavaScript
+- **Nome**: João Vitor Mendonça Merlin
+- **Matrícula**: 222006848
 
-## Frameworks e banco de dados
-
-  - Flask
-  - SQLAlchemy
-
-## Linguagens de marcação e estilo
-
-- HTML
-- CSS
-
-## Produzido por
- - Nome: João Vitor Mendonça Merlin
- - Matrícula: 222006848
+---
 
 ## UML do codigo
 

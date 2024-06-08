@@ -7,73 +7,103 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     {% block javascript %}
-<script type="text/javascript">
-async function deleteNote(noteId) {
-    const response = await fetch("/delete-note", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ noteId: noteId }),
-    });
+    <script type="text/javascript">
+    // Função assíncrona para excluir uma nota do banco de dados
+    async function deleteNote(noteId) {
+        // Envia uma solicitação assíncrona para o servidor para excluir a nota
+        const response = await fetch("/delete-note", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // Envia o ID da nota a ser excluída como dados JSON na solicitação
+            body: JSON.stringify({ noteId: noteId }),
+        });
 
-    const result = await response.json();
-    if (result.success) {
-        // Recarregar a página atual após a exclusão bem-sucedida
-        window.location.reload();
-    }
-}
-
-        function enableEdit(noteId) {
-            const noteTextarea = document.getElementById(`note-${noteId}`);
-            noteTextarea.disabled = false;
-            noteTextarea.focus();
-            document.getElementById(`edit-${noteId}`).style.display = 'none';
-            document.getElementById(`save-${noteId}`).style.display = 'inline-block';
+        // Analisa a resposta JSON retornada pelo servidor
+        const result = await response.json();
+        // Verifica se a exclusão foi bem-sucedida com base no campo 'success' na resposta
+        if (result.success) {
+            // Recarrega a página atual após a exclusão bem-sucedida
+            window.location.reload();
         }
+    }
 
-        async function editNote(noteId) {
-            const noteTextarea = document.getElementById(`note-${noteId}`);
-            const newData = noteTextarea.value;
+    // Função para habilitar a edição de uma nota
+    function enableEdit(noteId) {
+        // Obtém a área de texto da nota com base no ID da nota
+        const noteTextarea = document.getElementById(`note-${noteId}`);
+        // Habilita a área de texto para edição
+        noteTextarea.disabled = false;
+        // Define o foco na área de texto para facilitar a edição
+        noteTextarea.focus();
+        // Esconde o botão de edição após clicar nele
+        document.getElementById(`edit-${noteId}`).style.display = 'none';
+        // Exibe o botão de salvar após clicar no botão de edição
+        document.getElementById(`save-${noteId}`).style.display = 'inline-block';
+    }
 
-            const response = await fetch("/edit-note", {
-                method: "POST",
+    // Função assíncrona para editar uma nota no banco de dados
+    async function editNote(noteId) {
+        // Obtém a nova data da nota da área de texto
+        const noteTextarea = document.getElementById(`note-${noteId}`);
+        const newData = noteTextarea.value;
+
+        // Envia uma solicitação assíncrona para o servidor para editar a nota
+        const response = await fetch("/edit-note", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // Envia o ID da nota e a nova data como dados JSON na solicitação
+            body: JSON.stringify({ noteId: noteId, data: newData }),
+        });
+
+        // Analisa a resposta JSON retornada pelo servidor
+        const result = await response.json();
+        // Verifica se a edição foi bem-sucedida com base no campo 'success' na resposta
+        if (result.success) {
+            // Desabilita a área de texto após a edição bem-sucedida
+            noteTextarea.disabled = true;
+            // Exibe o botão de edição novamente após a edição bem-sucedida
+            document.getElementById(`edit-${noteId}`).style.display = 'inline-block';
+            // Esconde o botão de salvar após a edição bem-sucedida
+            document.getElementById(`save-${noteId}`).style.display = 'none';
+        }
+    }
+
+    // Função assíncrona para enviar mensagem para o ChatGPT
+    async function sendMessage() {
+        // Obtém a mensagem do usuário do campo de entrada
+        const userMessage = document.getElementById('user-message').value;
+        // Obtém a área de resposta onde a resposta do ChatGPT será exibida
+        const responseArea = document.getElementById('response-area');
+
+        // Verifica se a mensagem do usuário não está vazia
+        if (userMessage) {
+            // Envia uma solicitação assíncrona para o servidor para processar a mensagem do usuário
+            const response = await fetch("/chat", {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ noteId: noteId, data: newData }),
+                // Envia a mensagem do usuário como dados JSON na solicitação
+                body: JSON.stringify({ message: userMessage })
             });
 
-            const result = await response.json();
-            if (result.success) {
-                noteTextarea.disabled = true;
-                document.getElementById(`edit-${noteId}`).style.display = 'inline-block';
-                document.getElementById(`save-${noteId}`).style.display = 'none';
+            // Analisa a resposta JSON retornada pelo servidor
+            const data = await response.json();
+            // Verifica se a resposta do ChatGPT está disponível
+            if (data.reply) {
+                // Exibe a mensagem do usuário e a resposta do ChatGPT na área de resposta
+                responseArea.innerHTML = `<p><strong>You:</strong> ${userMessage}</p><p><strong>ChatGPT:</strong> ${data.reply}</p>`;
+            } else {
+                // Exibe uma mensagem de erro caso não haja resposta do ChatGPT
+                responseArea.innerHTML = `<p><strong>ChatGPT:</strong> Ocorreu um erro ao processar sua solicitação.</p>`;
             }
         }
-
-        async function sendMessage() {
-            const userMessage = document.getElementById('user-message').value;
-            const responseArea = document.getElementById('response-area');
-
-            if (userMessage) {
-                const response = await fetch("/chat", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ message: userMessage })
-                });
-
-                const data = await response.json();
-                if (data.reply) {
-                    responseArea.innerHTML = `<p><strong>You:</strong> ${userMessage}</p><p><strong>ChatGPT:</strong> ${data.reply}</p>`;
-                } else {
-                    responseArea.innerHTML = `<p><strong>ChatGPT:</strong> Ocorreu um erro ao processar sua solicitação.</p>`;
-                }
-            }
-        }
-    </script>
+    }
+</script>
     {% endblock %}
 </head>
 <body>
